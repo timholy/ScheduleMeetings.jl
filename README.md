@@ -7,7 +7,7 @@
 Schedule weekly meetings for lists of presenters. The package is currently set up for two weekly meetings, internally called "lab meeting" and "journal club." It attempts to schedule with the following goals:
 
 - schedule each presenter once for each slated list (the lists of presenters in the two meetings do not have to be identical)
-- allow individuals to have target dates; for example, if a person is presenting in an external meeting on a particular, you might want to schedule a practice talk before (but not too far before) their official talk
+- allow individuals to have target dates; for example, if a person is presenting in an external meeting, you might want to schedule a practice talk before (but not too far before) their official talk
 - avoid holidays and travel
 - try to avoid having the same person presenting in both meetings within the same 7-day period
 - try to preserve the order of presentation as passed in by the targets

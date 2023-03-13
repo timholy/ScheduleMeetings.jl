@@ -10,7 +10,10 @@ HolidayCalendars = "805b3977-dd70-49b2-89e1-5b1e213f8a24"
 RDates = "42063a9e-4db3-11e9-2c9c-956b066f8181"
 
 [compat]
-julia = "1"
+Evolutionary = "0.11"
+HolidayCalendars = "0.1"
+RDates = "0.5"
+julia = "1.6"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
