@@ -104,6 +104,7 @@ function schedule_meetings(targetslm::typeof(default_target),
     perm0 = [1:nlm; 1:njc]
     result = Evolutionary.optimize(f, perm0, GA(mutation=swap2blocks), Evolutionary.Options(iterations=10^3, show_trace=true))
     @show Evolutionary.minimum(result) f(perm0)
+    @show Evolutionary.minimizer(result) perm0
     perm = f(perm0) < Evolutionary.minimum(result) ? perm0 : Evolutionary.minimizer(result)
     return buildlist(dateslm, perm[1:nlm], targetslm), buildlist(datesjc, perm[nlm+1:nlm+njc], targetsjc)
 end
