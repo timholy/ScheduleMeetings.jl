@@ -3,6 +3,12 @@ uuid = "18647eb5-d111-4953-ac7e-c27d8fc5d0b4"
 authors = ["Tim Holy <tim.holy@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Evolutionary = "86b6b26d-c046-49b6-aa0b-5f0f74682bd6"
+HolidayCalendars = "805b3977-dd70-49b2-89e1-5b1e213f8a24"
+RDates = "42063a9e-4db3-11e9-2c9c-956b066f8181"
+
 [compat]
 julia = "1"
 
