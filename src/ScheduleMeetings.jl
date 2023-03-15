@@ -21,7 +21,7 @@ const DateRange = typeof(today():Day(1):today()+Day(5))
 penalty(_, ::Nothing) = Day(0)
 function penalty(date, target::Target)
     target.prior && date >= target.date && return Day(10^5)  # something big but won't overflow
-    return target.date - date
+    return 3*(target.date - date)
 end
 
 function objective(dates, targets)
@@ -102,10 +102,9 @@ function schedule_meetings(targetslm::typeof(default_target),
         return perm
     end
     perm0 = [1:nlm; 1:njc]
-    result = Evolutionary.optimize(f, perm0, GA(mutation=swap2blocks), Evolutionary.Options(iterations=10^3, show_trace=true))
-    @show Evolutionary.minimum(result) f(perm0)
-    @show Evolutionary.minimizer(result) perm0
-    perm = f(perm0) < Evolutionary.minimum(result) ? perm0 : Evolutionary.minimizer(result)
+    result = Evolutionary.optimize(f, perm0, GA(mutation=swap2blocks, ɛ=0.1), Evolutionary.Options(iterations=1000))
+    f(perm0) >= Evolutionary.minimum(result) || @warn "Initial permutation was better than final result"
+    perm = Evolutionary.minimizer(result)
     return buildlist(dateslm, perm[1:nlm], targetslm), buildlist(datesjc, perm[nlm+1:nlm+njc], targetsjc)
 end
 
