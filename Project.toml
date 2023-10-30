@@ -4,6 +4,7 @@ authors = ["Tim Holy <tim.holy@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
 [deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Evolutionary = "86b6b26d-c046-49b6-aa0b-5f0f74682bd6"
 HolidayCalendars = "805b3977-dd70-49b2-89e1-5b1e213f8a24"

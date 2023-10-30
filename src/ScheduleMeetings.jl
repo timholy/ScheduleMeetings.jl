@@ -4,8 +4,9 @@ using Dates
 using RDates
 using HolidayCalendars
 using Evolutionary
+using DataFrames
 
-export Target, TargetEltype, schedule_meetings
+export Target, TargetEltype, schedule_meetings, complete_list
 
 struct Target
     date::Date
@@ -67,7 +68,7 @@ end
 function filldates(start, n, calendars, avoid; gap=Day(7))
     dates = Date[]
     for _ in 1:n
-        while any(cal -> is_holiday(cal, start), calendars) || any(rng -> start ∈ rng, avoid)
+        while any(cal -> is_holiday(cal, start), calendars) || any(rng -> start == rng || (isa(rng, AbstractRange) && start ∈ rng), avoid)
             start += gap
         end
         push!(dates, start)
@@ -88,7 +89,8 @@ function schedule_meetings(targetslm::typeof(default_target),
     datesjc = filldates(startjc, njc, calendars, avoid)
 
     builddict(dates, p, targets) = Dict(person => dates[i] for ((person, _), i) in zip(targets, p))
-    buildlist(dates, p, targets) = [person => dates[i] for ((person, _), i) in zip(targets, p)]
+    buildlist(dates, p, targets) = sort!([person => dates[i] for ((person, _), i) in zip(targets, p)]; by=last)
+    to_df(pairs) = DataFrame("Presenter" => first.(pairs), "Date" => last.(pairs))
 
     f(perm) = objective_lm_jc(builddict(dateslm, view(perm, 1:nlm), targetslm),
                               builddict(datesjc, view(perm, nlm+1:nlm+njc), targetsjc),
@@ -105,9 +107,11 @@ function schedule_meetings(targetslm::typeof(default_target),
     result = Evolutionary.optimize(f, perm0, GA(mutation=swap2blocks, ɛ=0.1), Evolutionary.Options(iterations=1000))
     f(perm0) >= Evolutionary.minimum(result) || @warn "Initial permutation was better than final result"
     perm = Evolutionary.minimizer(result)
-    return buildlist(dateslm, perm[1:nlm], targetslm), buildlist(datesjc, perm[nlm+1:nlm+njc], targetsjc)
+    return to_df(buildlist(dateslm, perm[1:nlm], targetslm)), to_df(buildlist(datesjc, perm[nlm+1:nlm+njc], targetsjc))
 end
 
+complete_list(targeted::AbstractDict, all) = TargetEltype[k => get(targeted, k, nothing) for k in all]
+complete_list(targeted, all) = complete_list(Dict(k => v for (k, v) in targeted), all)
 
 function __init__()
     push!(calendars, calendar(CALENDARS, "US/SETTLEMENT"))
