@@ -12,7 +12,7 @@ Schedule weekly meetings for lists of presenters. The package is currently set u
 - try to avoid having the same person presenting in both meetings within the same 7-day period
 - try to preserve the order of presentation as passed in by the targets
 
-It defines an objective function and uses evolutionary optimization where the mutation operation is to make swaps.
+It defines an objective function and uses exhautive optimization (it tries every permutation).
 
 Demo:
 
