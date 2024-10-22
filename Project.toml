@@ -4,17 +4,14 @@ authors = ["Tim Holy <tim.holy@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
 [deps]
+BusinessDays = "4f18b42c-503e-5345-9536-bb0f25fc7038"
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-HolidayCalendars = "805b3977-dd70-49b2-89e1-5b1e213f8a24"
-RDates = "42063a9e-4db3-11e9-2c9c-956b066f8181"
 
 [compat]
 Combinatorics = "1"
 DataFrames = "1"
-HolidayCalendars = "0.1"
-RDates = "0.5"
 julia = "1.6"
 
 [extras]

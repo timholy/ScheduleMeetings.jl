@@ -1,8 +1,7 @@
 module ScheduleMeetings
 
 using Dates
-using RDates
-using HolidayCalendars
+using BusinessDays
 using Combinatorics
 using DataFrames
 
@@ -14,7 +13,7 @@ struct Target
 end
 Target(date::Date) = Target(date, true)
 
-const calendars = CachedCalendar[]
+const calendars = [:UnitedStates]
 const TargetEltype = Pair{String,Union{Target,Nothing}}
 const default_target = TargetEltype[]
 const DateRange = typeof(today():Day(1):today()+Day(5))
@@ -58,7 +57,7 @@ end
 function filldates(start, n, calendars, avoid; gap=Day(7))
     dates = Date[]
     for _ in 1:n
-        while any(cal -> is_holiday(cal, start), calendars) || any(rng -> start == rng || (isa(rng, AbstractRange) && start ∈ rng), avoid)
+        while any(cal -> !isbday(cal, start), calendars) || any(rng -> start == rng || (isa(rng, AbstractRange) && start ∈ rng), avoid)
             start += gap
         end
         push!(dates, start)
@@ -93,6 +92,7 @@ function schedule_meetings(targetslm::typeof(default_target),
         avoidlm = avoidjc = avoid
     end
     nlm, njc = length(targetslm), length(targetsjc)
+    !isempty((dayofweek(startlm), dayofweek(startjc)) ∩ (Saturday, Sunday)) && error("Start date must be a weekday")
     dateslm = filldates(startlm, nlm, calendars, avoidlm)
     datesjc = filldates(startjc, njc, calendars, avoidjc)
     flexlm, availlm = available(targetslm, dateslm)
@@ -140,7 +140,7 @@ function copyto!(dest, src)
 end
 
 function __init__()
-    push!(calendars, calendar(CALENDARS, "US/SETTLEMENT"))
+    BusinessDays.initcache(:UnitedStates)
     return nothing
 end
 
