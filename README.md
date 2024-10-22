@@ -26,6 +26,6 @@ targetslm = TargetEltype["A" => nothing, "B" => Target(Date(2023, 4, 11)), "C" =
 targetsjc = TargetEltype["A" => nothing, "C" => nothing, "D" => nothing]
 # avoid some travel
 avoid = [Date(2023, 3, 26):Day(1):Date(2023, 3, 31)]
-# find a solution (not guaranteed to be globally optimal)
+# find the optimal solution, given the objective function (see code for details)
 presentlm, presentjc = schedule_meetings(targetslm, targetsjc, startlm, startjc; avoid)
 ```
