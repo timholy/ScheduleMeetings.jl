@@ -89,8 +89,8 @@ function schedule_meetings(targetslm::typeof(default_target),
                            avoid=nothing,
                            kwargs...)
     if avoid !== nothing
-        @assert avoidlm === nothing && avoidjc === nothing
-        avoidlm = avoidjc = avoid
+        avoidlm = avoidlm === nothing ? avoid : vcat(avoidlm, avoid)
+        avoidjc = avoidjc === nothing ? avoid : vcat(avoidjc, avoid)
     end
     nlm, njc = length(targetslm), length(targetsjc)
     !isempty((dayofweek(startlm), dayofweek(startjc)) ∩ (Saturday, Sunday)) && error("Start date must be a weekday")
