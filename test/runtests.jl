@@ -20,5 +20,8 @@ using Test
         @test sjc[1, :Presenter] == "C" && sjc[1, :Date] == Date(2023, 3, 24)
         @test sjc[2, :Presenter] == "A" && sjc[2, :Date] == Date(2023, 4, 7)
         @test sjc[3, :Presenter] == "D" && sjc[3, :Date] == Date(2023, 4, 14)
+
+        slm, sjc = schedule_meetings(targetslm, targetsjc, startlm, startjc; avoid, gap=Day(14))
+        @test all(==(Day(14)), diff(sjc.Date))
     end
 end

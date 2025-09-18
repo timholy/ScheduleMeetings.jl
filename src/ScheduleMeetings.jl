@@ -83,6 +83,7 @@ function schedule_meetings(targetslm::typeof(default_target),
                            startlm,
                            startjc;
                            calendars=ScheduleMeetings.calendars,
+                           gap=Day(7),
                            avoidlm=nothing,
                            avoidjc=nothing,
                            avoid=nothing,
@@ -93,8 +94,8 @@ function schedule_meetings(targetslm::typeof(default_target),
     end
     nlm, njc = length(targetslm), length(targetsjc)
     !isempty((dayofweek(startlm), dayofweek(startjc)) ∩ (Saturday, Sunday)) && error("Start date must be a weekday")
-    dateslm = filldates(startlm, nlm, calendars, avoidlm)
-    datesjc = filldates(startjc, njc, calendars, avoidjc)
+    dateslm = filldates(startlm, nlm, calendars, avoidlm; gap)
+    datesjc = filldates(startjc, njc, calendars, avoidjc; gap)
     flexlm, availlm = available(targetslm, dateslm)
     flexjc, availjc = available(targetsjc, datesjc)
     allpeople = Set{String}()
