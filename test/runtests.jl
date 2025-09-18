@@ -23,5 +23,7 @@ using Test
 
         slm, sjc = schedule_meetings(targetslm, targetsjc, startlm, startjc; avoid, gap=Day(14))
         @test all(==(Day(14)), diff(sjc.Date))
+        slm, sjc = schedule_meetings(targetslm, targetsjc, startlm, startjc; avoid, avoidlm=[Date(2023, 4, 4)])
+        @test slm[2, :Date] == Date(2023, 4, 11)
     end
 end
